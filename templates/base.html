@@ -1,0 +1,232 @@
+{% load static %}{% static 'images/logo.png' as default_logo %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.brand_name|default:"RiBhay" }} — Web Development Studio{% endblock %}</title>
+  <meta name="description" content="{{ site.hero_text|truncatechars:155 }}">
+  <meta name="theme-color" content="#05070a">
+  <link rel="icon" href="{% if site.logo %}{{ site.logo.url }}{% else %}{{ default_logo }}{% endif %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>:root{--c1-rgb:{{ colors.c1 }};--c1l-rgb:{{ colors.c1l }};--c2-rgb:{{ colors.c2 }};--c2l-rgb:{{ colors.c2l }}}</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            obsidian: '#05070a',
+            ink: '#090d16',
+            pearl: '#F8FAFC',
+            mute: '#A3B1C6',
+            neon: 'rgb(var(--c1-rgb) / <alpha-value>)',
+            neon2: 'rgb(var(--c1l-rgb) / <alpha-value>)',
+            violet2: 'rgb(var(--c2-rgb) / <alpha-value>)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+    @keyframes spin{to{--a:360deg}}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    @keyframes floaty{50%{transform:translateY(-10px)}}
+    html{background:#04060f}
+    body{font-family:'Plus Jakarta Sans',sans-serif;color:#A3B1C6;background:transparent;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.45;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+    h1,h2,h3,.font-display{font-family:'Syne',sans-serif;letter-spacing:-.02em}
+    ::selection{background:rgb(var(--c1-rgb) / .35);color:#fff}
+    ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{background:#05070a}::-webkit-scrollbar-thumb{background:linear-gradient(rgb(var(--c1-rgb)),rgb(var(--c2-rgb)));border-radius:10px;border:2px solid #05070a}
+    
+    .glass{background:rgba(8,12,26,.72);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.10);box-shadow:0 25px 50px -12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.07),inset 0 -30px 60px -30px rgba(0,0,0,.55);transition:all .3s}
+    .glass:hover{background:rgba(14,20,40,.8);border-color:rgb(var(--c1-rgb) / .35);box-shadow:0 25px 60px -12px rgb(var(--c1-rgb) / .15)}
+    
+    .pill{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:999px;font:500 .72rem 'JetBrains Mono',monospace;color:#E2E8F0;border:1px solid transparent;background:linear-gradient(#0a0f18,#0a0f18) padding-box,conic-gradient(from var(--a),rgba(255,255,255,.05),rgb(var(--c1-rgb)),rgb(var(--c2-rgb)),rgba(255,255,255,.05)) border-box;animation:spin 5s linear infinite;box-shadow:0 0 25px rgb(var(--c1-rgb) / .15)}
+    .dot{width:6px;height:6px;border-radius:50%;background:rgb(var(--c1l-rgb));box-shadow:0 0 10px rgb(var(--c1-rgb))}
+    
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:999px;font-weight:600;font-size:.9rem;transition:all .3s}
+    .btn-glow{background:linear-gradient(135deg,rgb(var(--c1-rgb)),rgb(var(--c1l-rgb)));color:#04110c;box-shadow:0 0 25px rgb(var(--c1-rgb) / .3)}
+    .btn-glow:hover{box-shadow:0 0 45px rgb(var(--c1-rgb) / .55);transform:translateY(-2px)}
+    .btn-ghost{color:#F8FAFC;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.03)}
+    .btn-ghost:hover{border-color:rgb(var(--c2-rgb) / .6);background:rgb(var(--c2-rgb) / .1)}
+    .grad-text{background:linear-gradient(110deg,#F8FAFC 10%,rgb(var(--c1l-rgb)) 45%,rgb(var(--c2l-rgb)) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    
+    .navlink{padding:.35rem .85rem;border-radius:999px;transition:.25s}.navlink:hover,.navlink.on{color:#F8FAFC;background:rgba(255,255,255,.08)}
+    
+    .planet-canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:-2;pointer-events:none;opacity:0;transition:opacity 1.6s ease}
+    .planet-canvas.on{opacity:1}
+    @media(max-width:760px){.pill{animation:none}}
+    html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
+    h1,h2{text-shadow:0 2px 40px rgba(0,0,0,.6)}
+
+    #site-header {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    #site-header.nav-hidden {
+      transform: translateY(-130%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.143.0/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@0.143.0/examples/jsm/"
+      }
+    }
+  </script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col">
+  <canvas id="planet" class="planet-canvas"></canvas>
+  
+  {% with logo_url=default_logo %}
+  <header id="site-header" class="fixed top-2 inset-x-0 z-50 px-4 md:px-8">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between py-2 bg-transparent">
+      <a href="{% url 'core:home' %}" class="flex items-center group">
+        <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{{ default_logo }}{% endif %}" alt="RiBhay" class="h-12 md:h-14 w-auto object-contain transition-transform group-hover:scale-105 duration-200">
+      </a>
+
+      {% with u=request.resolver_match.url_name %}
+      <div class="hidden md:flex items-center gap-2 text-sm font-medium glass px-4 py-1.5 rounded-full">
+        <a href="{% url 'core:home' %}" class="navlink {% if u == 'home' %}on{% endif %}">Home</a>
+        <a href="{% url 'core:projects' %}" class="navlink {% if u == 'projects' or u == 'project_detail' %}on{% endif %}">Projects</a>
+        <a href="{% url 'core:about' %}" class="navlink {% if u == 'about' or u == 'member' %}on{% endif %}">About</a>
+        <a href="{% url 'core:contact' %}" class="navlink {% if u == 'contact' %}on{% endif %}">Contact</a>
+      </div>
+      {% endwith %}
+
+      <div class="flex items-center gap-3">
+        <a href="{% url 'core:contact' %}" class="btn btn-glow !py-2 !px-5 !text-sm hidden sm:inline-flex">Hire us</a>
+        <button id="burger" aria-label="Menu" class="md:hidden p-2 text-pearl text-2xl hover:text-neon2 focus:outline-none transition">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mnav" class="hidden md:hidden glass rounded-3xl max-w-6xl mx-auto mt-2 p-4 text-center font-medium space-y-1">
+      <a class="block py-2.5 text-pearl rounded-xl hover:bg-white/5" href="{% url 'core:home' %}">Home</a>
+      <a class="block py-2.5 text-pearl rounded-xl hover:bg-white/5" href="{% url 'core:projects' %}">Projects</a>
+      <a class="block py-2.5 text-pearl rounded-xl hover:bg-white/5" href="{% url 'core:about' %}">About</a>
+      <a class="block py-2.5 text-pearl rounded-xl hover:bg-white/5" href="{% url 'core:contact' %}">Contact</a>
+    </div>
+  </header>
+  {% endwith %}
+
+  <main class="flex-1 relative z-10">
+    {% if messages %}<div class="fixed top-24 right-4 z-50 space-y-2">{% for m in messages %}
+      <div class="glass rounded-2xl px-5 py-3 text-sm text-pearl {% if m.tags == 'error' %}!border-red-500/50{% else %}!border-neon/50{% endif %}">{{ m }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Compact Minimalist Footer -->
+  <footer class="relative z-30 bg-[#04060f] border-t border-white/5 overflow-hidden">
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-25 mix-blend-screen">
+      <video autoplay loop muted playsinline class="w-full h-full object-cover">
+        <source src="{% static 'videos/Footer.mp4' %}" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="absolute inset-0 z-0 bg-radial-gradient from-transparent via-[#04060f]/60 to-[#04060f] pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-2xl mx-auto px-6 pt-10 pb-8 flex flex-col items-center text-center">
+      <a href="{% url 'core:home' %}" class="inline-block transition-transform hover:scale-105 duration-200 mb-5">
+        <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{{ default_logo }}{% endif %}" alt="RiBhay" class="h-12 w-auto object-contain">
+      </a>
+
+      <div class="flex items-center justify-center gap-6 md:gap-8 text-sm font-medium text-slate-300 mb-6">
+        <a class="hover:text-neon2 transition" href="{% url 'core:home' %}">Home</a>
+        <a class="hover:text-neon2 transition" href="{% url 'core:projects' %}">Projects</a>
+        <a class="hover:text-neon2 transition" href="{% url 'core:about' %}">About</a>
+        <a class="hover:text-neon2 transition" href="{% url 'core:contact' %}">Contact</a>
+      </div>
+
+      <div class="mb-6">
+        <a href="mailto:ribhay.dev@gmail.com" 
+           title="Send Email to RiBhay" 
+           class="inline-flex items-center justify-center text-slate-300 hover:text-neon2 hover:scale-110 transition-all duration-200">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
+          </svg>
+        </a>
+      </div>
+
+      <p class="font-mono text-xs text-slate-400 mb-3 tracking-wide">
+        © 2026 RiBhay · Built with Django
+      </p>
+
+      <!-- Clickable Member Profile Links inside Pill Badge -->
+      <div>
+        <span class="pill">
+          <span class="dot"></span>Designed &amp; Developed by 
+          {% if footer_team %}
+            {% for t in footer_team %}
+              <a href="{% url 'core:member' t.slug %}" class="text-neon2 hover:underline font-semibold transition">{{ t.first_name|default:t.name }}</a>{% if not forloop.last %} &amp; {% endif %}
+            {% endfor %}
+          {% else %}
+            <a href="{% url 'core:member' 'abhay' %}" class="text-neon2 hover:underline font-semibold transition">Abhay</a> &amp; 
+            <a href="{% url 'core:member' 'riya' %}" class="text-neon2 hover:underline font-semibold transition">Riya</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let lastScrollTop = 0;
+    const header = document.getElementById('site-header');
+    const mobileMenu = document.getElementById('mnav');
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        return;
+      }
+
+      if (currentScroll > lastScrollTop && currentScroll > 80) {
+        header.classList.add('nav-hidden');
+      } else {
+        header.classList.remove('nav-hidden');
+      }
+      lastScrollTop = Math.max(0, currentScroll);
+    }, { passive: true });
+
+    document.getElementById('burger').onclick = () => document.getElementById('mnav').classList.toggle('hidden');
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const t = +el.dataset.count, o = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) {
+          o.disconnect();
+          const s = performance.now();
+          (function f(n) {
+            const p = Math.min((n - s) / 1200, 1);
+            el.textContent = Math.round(t * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(f);
+          })(s);
+        }
+      });
+      o.observe(el);
+    });
+  </script>
+  <script type="module" src="{% static 'js/planet.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

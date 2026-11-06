@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+<style>
+  /* 3D Isometric Perspective Stage */
+  .iso-stage {
+    perspective: 90rem;
+    perspective-origin: 50% 50%;
+    overflow: hidden;
+  }
+  .iso-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.2rem;
+    flex-wrap: wrap;
+    transform: rotateX(20deg) rotateZ(-7deg) rotateY(12deg) scale3d(0.95, 0.95, 0.95);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  @media (max-width: 768px) {
+    .iso-container {
+      transform: rotateX(15deg) rotateZ(-4deg) rotateY(8deg) scale(0.82);
+      gap: 1.8rem;
+    }
+  }
+
+  /* 3D Card Box */
+  .iso-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+    text-decoration: none;
+  }
+  .iso-box:hover .iso-cover {
+    transform: translateY(-16px) scale(1.05);
+  }
+
+  /* Card Cover & Dynamic Glow */
+  .iso-cover {
+    position: relative;
+    width: 175px;
+    height: 235px;
+    border-radius: 18px;
+    transition: all 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .iso-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
+  }
+  .iso-cover .glow-bg {
+    position: absolute;
+    inset: 4px;
+    border-radius: 18px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(22px);
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 300ms ease-in-out;
+    z-index: 1;
+  }
+  .iso-box:hover .iso-cover .glow-bg {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+
+  /* 3D Action Button */
+  .iso-btn {
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    width: 185px;
+    height: 46px;
+    border-radius: 10px;
+    background-color: #1a202c;
+    margin-top: 24px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Syne', sans-serif;
+    color: #fff;
+    border: 1px solid var(--card-accent, #00BF9C);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+  }
+  /* Slide Fill Effect on Button Hover */
+  .iso-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 100%;
+    background-color: var(--card-accent, #00BF9C);
+    transition: width 250ms cubic-bezier(0.25, 0.75, 0.5, 1.25);
+    z-index: 1;
+  }
+  .iso-box:hover .iso-btn::before {
+    width: 100%;
+    opacity: 0.95;
+  }
+  /* Icon Box */
+  .iso-btn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 44px;
+    height: 100%;
+    background-color: var(--card-accent, #00BF9C);
+    border-radius: 9px 0 0 9px;
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTQgMTciIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIGZpbGw9IiNmZmYiPjxwb2x5Z29uIHBvaW50cz0iNyAxMyAxNCA2IDEwIDYgMTAgMCA0IDAgNCA2IDAgNiIvPjxyZWN0IHk9IjE1IiB3aWR0aD0iMTQiIGhlaWdodD0iMiIvPjwvZz4KPC9zdmc+');
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+  }
+  .iso-btn span {
+    position: relative;
+    z-index: 3;
+    transition: color 0.2s ease;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Clean Futuristic Hero Section -->
+<section class="relative min-h-[85vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+  <div class="relative max-w-5xl mx-auto px-6 w-full text-center z-10">
+    <div class="reveal">
+      <span class="inline-block font-sans italic text-sm md:text-lg tracking-wide text-neon2/90 font-medium">
+        {{ site.eyebrow|default:"Technology for the Future" }}
+      </span>
+    </div>
+    <h1 class="reveal mt-4 font-display font-black text-pearl tracking-tight leading-[1.05] text-[clamp(2.8rem,7vw,5.5rem)]">
+      {{ site.hero_title|default:"RiBhay" }}
+      <span class="grad-text">{{ site.hero_highlight|default:"Studios" }}</span>
+    </h1>
+    <p class="reveal mt-6 text-sm md:text-lg text-slate-300/80 max-w-xl mx-auto leading-relaxed font-sans">
+      {{ site.hero_text|default:"Building high-performance web products, scalable Django backends, and bespoke 3D digital experiences for modern brands." }}
+    </p>
+    <div class="reveal mt-9 flex flex-wrap items-center justify-center gap-4">
+      <a href="{% url 'core:projects' %}" 
+         class="inline-flex items-center justify-center px-9 py-3.5 rounded-full font-display font-extrabold text-sm tracking-wider uppercase bg-white text-[#04060f] shadow-[0_10px_25px_rgba(255,255,255,0.2)] hover:shadow-[0_15px_35px_rgba(255,255,255,0.35)] hover:scale-105 active:scale-95 transition-all duration-300">
+        Go Now →
+      </a>
+      <a href="{% url 'core:contact' %}" class="btn btn-ghost !py-3 !px-7 !text-xs font-mono uppercase tracking-wider">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Grid -->
+<section class="max-w-6xl mx-auto px-6 py-10">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {% for s in stats %}
+    <div class="reveal glass rounded-3xl p-6">
+      <div class="font-mono text-4xl md:text-5xl font-medium text-pearl"><span data-count="{{ s.value }}">0</span><span class="text-neon2">{{ s.suffix }}</span></div>
+      <div class="mt-2 font-mono text-xs uppercase tracking-widest">{{ s.label }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 3D Isometric Card Projects Showcase (Top 4 Projects) -->
+<section class="max-w-7xl mx-auto px-6 py-24 relative z-10">
+  <div class="reveal flex items-end justify-between flex-wrap gap-4 mb-14">
+    <div>
+      <span class="pill"><span class="dot"></span>Selected work</span>
+      <h2 class="mt-5 text-4xl md:text-6xl font-extrabold text-pearl">Featured Projects</h2>
+    </div>
+    <a href="{% url 'core:projects' %}" class="btn btn-ghost">All projects (View all) →</a>
+  </div>
+
+  <!-- 3D Perspective Stage -->
+  <div class="iso-stage py-10">
+    <div class="iso-container">
+      {% for p in projects|slice:":4" %}
+        {# Dynamic 4-color accent cycle: Cyan, Purple, Blue, Orange #}
+        {% cycle '#00BF9C' '#653EE6' '#008BFF' '#FF6500' as card_color silent %}
+        
+        <a href="{% url 'core:project_detail' p.slug %}" class="iso-box" style="--card-accent: {{ card_color }};">
+          <div class="iso-cover">
+            {% if p.image %}
+              <img src="{{ p.image.url }}" alt="{{ p.title }}">
+              <div class="glow-bg" style="background-image: url('{{ p.image.url }}');"></div>
+            {% elif p.thumbnail %}
+              <img src="{{ p.thumbnail.url }}" alt="{{ p.title }}">
+              <div class="glow-bg" style="background-image: url('{{ p.thumbnail.url }}');"></div>
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80" alt="{{ p.title }}">
+              <div class="glow-bg" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80');"></div>
+            {% endif %}
+          </div>
+          
+          <div class="iso-btn">
+            <span>{{ p.title|truncatechars:14 }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="text-slate-400 font-mono text-sm py-12">Admin panel me projects add karein.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Tech Marquee Section -->
+<section class="py-10 overflow-hidden">
+  <div style="mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)">
+    <div class="marquee">
+      {% for i in "12" %}{% for t in tech %}<span class="font-display font-extrabold text-3xl md:text-4xl text-white/20 hover:text-neon2 transition whitespace-nowrap px-8">{{ t }} <span class="text-violet2/70">✦</span></span>{% endfor %}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Studio Story Section -->
+<section class="max-w-6xl mx-auto px-6 py-24">
+  <div class="reveal max-w-3xl">
+    <span class="pill"><span class="dot"></span>About</span>
+    <h2 class="mt-5 text-4xl md:text-5xl font-extrabold text-pearl">Two developers, one studio.</h2>
+    <div class="prose-d mt-6 text-lg text-slate-300">
+      <p>{{ site.about_text }}</p>
+      <p>{{ site.about_text2 }}</p>
+    </div>
+    <div class="mt-8">
+      <a href="{% url 'core:about' %}" class="text-neon2 font-semibold hover:underline">More about us →</a>
+    </div>
+  </div>
+</section>
+
+{% include 'core/_cta.html' %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}About — {{ site.brand_name }}{% endblock %}
+{% block content %}
+{% include 'core/_head.html' with eyebrow="Who we are" title="About" %}
+<section class="max-w-6xl mx-auto px-6 pb-10">
+  <div class="reveal glass rounded-3xl p-8 md:p-12 prose-d text-lg"><p>{{ site.about_text }}</p><p>{{ site.about_text2 }}</p></div>
+  <div class="mt-5 grid md:grid-cols-2 gap-5">
+    {% for g in skills %}
+    <div class="reveal glass rounded-3xl p-6">
+      <h3 class="font-mono text-xs uppercase tracking-widest text-neon2">{{ g.label }}</h3>
+      <div class="mt-4 flex flex-wrap gap-2">{% for i in g.item_list %}<span class="tag">{{ i }}</span>{% endfor %}</div>
+    </div>{% endfor %}
+  </div>
+  <h2 class="mt-20 mb-6 text-3xl md:text-5xl font-extrabold text-pearl">The team</h2>
+  <div class="grid md:grid-cols-2 gap-5">
+    {% for t in team %}
+    <a href="{% url 'core:member' t.slug %}" class="reveal glass group rounded-3xl p-6 flex items-center gap-5">
+      {% if t.photo %}<img src="{{ t.photo.url }}" alt="{{ t.name }}" class="avatar w-20 h-20">{% else %}<span class="avatar w-20 h-20 flex items-center justify-center bg-neon/20 font-display font-extrabold text-3xl text-neon2">{{ t.name|slice:":1" }}</span>{% endif %}
+      <div><h3 class="text-2xl font-extrabold text-pearl group-hover:text-neon2 transition">{{ t.name }}</h3><p class="font-mono text-xs text-neon2 mt-1">{{ t.role }}</p></div>
+    </a>{% endfor %}
+  </div>
+</section>
+{% include 'core/_cta.html' %}
+{% endblock %}

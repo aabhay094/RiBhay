@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ m.name }} — {{ site.brand_name }}{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 pt-36 text-center">
+  {% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" class="avatar w-44 h-44 mx-auto reveal">{% else %}<span class="avatar w-44 h-44 mx-auto flex items-center justify-center bg-neon/20 font-display font-extrabold text-7xl text-neon2">{{ m.name|slice:":1" }}</span>{% endif %}
+  <h1 class="reveal mt-8 font-extrabold text-pearl text-5xl md:text-6xl">{{ m.name }}</h1>
+  <p class="reveal mt-3 font-mono text-neon2">{{ m.role }}</p>
+  <p class="reveal mt-6 text-lg leading-relaxed text-left md:text-center">{{ m.bio }}</p>
+  <div class="reveal mt-6 flex justify-center gap-3 flex-wrap">
+    {% if m.github %}<a href="{{ m.github }}" target="_blank" rel="noopener" class="btn btn-ghost !py-2">GitHub ↗</a>{% endif %}
+    {% if m.linkedin %}<a href="{{ m.linkedin }}" target="_blank" rel="noopener" class="btn btn-ghost !py-2">LinkedIn ↗</a>{% endif %}
+    {% if m.email %}<a href="mailto:{{ m.email }}" class="btn btn-ghost !py-2">Email ↗</a>{% endif %}
+  </div>
+</div>
+<div class="max-w-3xl mx-auto px-6 pt-16">
+  {% if m.qualifications.all %}<h2 class="text-3xl font-extrabold text-pearl mb-5">Qualifications</h2>
+  {% for q in m.qualifications.all %}<div class="reveal tl p-5 mb-4"><h3 class="text-xl font-extrabold text-pearl">{{ q.title }}</h3>
+    <p class="font-mono text-xs text-neon2 mt-1">{{ q.institute }}</p><p class="mt-2 text-sm">{{ q.note }}</p></div>{% endfor %}{% endif %}
+  {% if m.certificates.all %}<h2 class="mt-14 text-3xl font-extrabold text-pearl mb-5">Certificates &amp; Certifications</h2>
+  <div class="grid gap-5">{% for c in m.certificates.all %}
+    <div class="reveal glass rounded-3xl overflow-hidden">
+      {% if c.image %}<img src="{{ c.image.url }}" alt="{{ c.title }}" class="w-full max-h-96 object-contain bg-black/40">{% endif %}
+      <div class="p-6"><h3 class="text-xl font-extrabold text-pearl">{{ c.title }}</h3>
+      <p class="font-mono text-xs text-neon2 mt-1">{% if c.issuer %}Issued by {{ c.issuer }}{% endif %}{% if c.date_text %} · {{ c.date_text }}{% endif %}</p>
+      {% if c.verify_url %}<a href="{{ c.verify_url }}" target="_blank" rel="noopener" class="mt-3 inline-block text-sm text-neon2 hover:underline">Verify Credential ↗</a>{% endif %}</div>
+    </div>{% endfor %}</div>{% endif %}
+  <a href="{% url 'core:home' %}" class="block text-center mt-14 font-mono text-sm hover:text-neon2">← Back to Home</a>
+</div>
+{% endblock %}

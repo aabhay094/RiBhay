@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Projects — {{ site.brand_name }}{% endblock %}
+{% block content %}
+{% include 'core/_head.html' with eyebrow="Selected work" title="Projects" %}
+<section class="max-w-6xl mx-auto px-6 pb-10">
+  <div class="grid md:grid-cols-2 gap-5">
+    {% for p in projects %}{% include 'core/_project_card.html' with p=p %}{% empty %}<p>Admin panel se projects add karo.</p>{% endfor %}
+  </div>
+</section>
+{% include 'core/_cta.html' %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ p.title }} — {{ site.brand_name }}{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 pt-36">
+  <a href="{% url 'core:projects' %}" class="font-mono text-xs hover:text-neon2">← All projects</a>
+  <span class="pill mt-6 reveal">{{ p.category }}</span>
+  <h1 class="reveal mt-5 font-extrabold text-pearl text-4xl md:text-6xl leading-tight">{{ p.title }}</h1>
+  <div class="reveal mt-10 glass rounded-3xl overflow-hidden h-64 md:h-96 relative v{{ p.variant }}">
+    {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.title }}" class="absolute inset-0 w-full h-full object-cover">{% else %}<div class="absolute inset-0 vgrid"></div><div class="absolute inset-0 flex items-center justify-center font-display font-extrabold text-9xl text-white/10">{{ p.title|slice:":1" }}</div>{% endif %}
+  </div>
+  <div class="mt-10 prose-d text-lg">{{ p.summary|linebreaks }}{{ p.description|linebreaks }}</div>
+  <div class="mt-4 flex flex-wrap gap-2">{% for t in p.tag_list %}<span class="tag">{{ t }}</span>{% endfor %}</div>
+  <div class="mt-8 flex flex-wrap gap-4">
+    {% if p.live_url %}<a href="{{ p.live_url }}" target="_blank" rel="noopener" class="btn btn-glow">Live Demo ↗</a>{% endif %}
+    {% if p.source_url %}<a href="{{ p.source_url }}" target="_blank" rel="noopener" class="btn btn-ghost">Source ↗</a>{% endif %}
+  </div>
+</div>
+{% if others %}<section class="max-w-6xl mx-auto px-6 pt-20"><h2 class="text-3xl font-extrabold text-pearl mb-6">More work</h2>
+<div class="grid md:grid-cols-2 gap-5">{% for o in others %}{% include 'core/_project_card.html' with p=o %}{% endfor %}</div></section>{% endif %}
+{% endblock %}
